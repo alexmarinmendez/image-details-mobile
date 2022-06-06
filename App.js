@@ -1,12 +1,27 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, SafeAreaView } from 'react-native';
+import { MainScreen, DetailsScreen } from './src/screens';
+import { Header } from './src/components';
 
 export default function App() {
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleSelectedItem = (item) => {
+    setSelectedItem(item);
+  };
+
+  const handleResetItem = () => {
+    setSelectedItem(null);
+  };
+
+  let content = <MainScreen onSelectedItem={handleSelectedItem} />;
+  if (selectedItem) content = <DetailsScreen selectedItem={selectedItem} onResetItem={handleResetItem} />;
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Header title="Perú en imágenes" />
+      {content}
+    </SafeAreaView>
   );
 }
 
@@ -14,7 +29,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
